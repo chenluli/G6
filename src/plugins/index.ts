@@ -7,6 +7,8 @@ import ToolBar from './toolBar';
 import Tooltip from './tooltip';
 import TimeBar from './timeBar';
 import ImageMinimap from './imageMinimap';
+import PluginBase, { Plugin } from './base'
+
 
 export default {
   Menu,
@@ -18,4 +20,7 @@ export default {
   Fisheye,
   TimeBar,
   ImageMinimap,
+  PluginBase,
+  Plugin,
+  registerPlugin: Plugin.registerPlugin,
 };

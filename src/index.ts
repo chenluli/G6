@@ -7,7 +7,12 @@ import Layout from './layout';
 import Global from './global';
 import Util from './util';
 import Plugins from './plugins';
+<<<<<<< HEAD
 import * as Algorithm from './algorithm';
+=======
+import * as Algorithm from './algorithm'
+import PluginBase from './plugins/base';
+>>>>>>> init register plugin
 
 const registerNode = Shape.registerNode;
 const registerEdge = Shape.registerEdge;
@@ -43,8 +48,11 @@ export {
   Algorithm,
   ToolBar,
   Tooltip,
+<<<<<<< HEAD
   TimeBar,
   ImageMinimap,
+=======
+>>>>>>> init register plugin
 };
 
 export default {
@@ -71,4 +79,7 @@ export default {
   Algorithm,
   Arrow,
   Marker,
+  registerPlugin: Plugins.registerPlugin,
+  Plugin: Plugins.Plugin,
+  PluginBase: Plugins.PluginBase,
 };

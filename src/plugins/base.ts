@@ -63,7 +63,7 @@ export default abstract class PluginBase {
   /**
    * 初始化方法，供子类实现
    */
-  public init() {}
+  public init() { }
 
   /**
    * 获取插件中的事件和事件处理方法，供子类实现
@@ -92,7 +92,7 @@ export default abstract class PluginBase {
   /**
    * 销毁方法，供子类复写
    */
-  public destroy() {}
+  public destroy() { }
 
   /**
    * 销毁插件
@@ -109,3 +109,42 @@ export default abstract class PluginBase {
     this.destroyed = true;
   }
 }
+
+export interface PluginRegisterCfg {
+  init: () => void, // 插件初始化方法
+  getDefaultCfgs?: () => {}, // 用于指定默认配置项
+  destroy: () => void, // 销毁插件方法
+  [key: string]: any; // 其他自定义属性和方法
+}
+
+export const Plugin: {
+  [pluginName: string]: any;
+  registerPlugin<Cfg>(
+    pluginName: string,
+    pluginCfg: any,
+  ): void;
+} = {
+  /**
+   * 注册布局的方法
+   * @param {string} pluginName 插件类型
+   * @param {object} pluginCfg 插件配置项
+   */
+  registerPlugin<Cfg>(pluginName: string, pluginCfg: any) {
+    if (!pluginCfg) {
+      throw new Error(`please specify handler for this plugin: ${pluginName}`);
+    }
+
+    // tslint:disable-next-line: max-classes-per-file
+    class GPlugin extends PluginBase {
+      constructor(cfg: Cfg) {
+        super(cfg);
+        const self = this as any;
+        each(pluginCfg, (value, key: string) => {
+          self[key] = value;
+        });
+      }
+    }
+
+    Plugin[pluginName] = GPlugin;
+  },
+};
