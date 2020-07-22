@@ -8,6 +8,7 @@ import ImgMinimap from './component/image-minimap';
 import ImgMinimap2 from './component/image-minimap2';
 import Tooltip from './component/tooltip';
 import ContextMenu from './component/comtextMenu';
+import ContinueLegend from './component/continue-legend'
 
 export default { title: 'Plugins' };
 
@@ -20,4 +21,17 @@ storiesOf('Plugins', module)
   .add('image minimap', () => <ImgMinimap />)
   .add('image minimap small graph', () => <ImgMinimap2 />)
   .add('tooltip', () => <Tooltip />)
-  .add('context menu', () => <ContextMenu />);
+  .add('context menu', () => <ContextMenu />)
+  .add('grid', () => (
+    <Grid />
+  ))
+  .add('minimap', () => (
+    <Minimap />
+  ))
+
+  .add('minimap force', () => (
+    <MinimapForce />
+  ))
+  .add('ContinueLegend', () => (
+    <ContinueLegend />
+  ))

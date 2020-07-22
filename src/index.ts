@@ -23,6 +23,7 @@ const ToolBar = Plugins.ToolBar;
 const Tooltip = Plugins.Tooltip;
 const TimeBar = Plugins.TimeBar;
 const ImageMinimap = Plugins.ImageMinimap;
+const ContinuousLegend = Plugins.ContinuousLegend
 
 export {
   registerNode,
@@ -45,6 +46,7 @@ export {
   Tooltip,
   TimeBar,
   ImageMinimap,
+  ContinuousLegend
 };
 
 export default {
@@ -68,6 +70,7 @@ export default {
   TimeBar,
   Fisheye,
   ImageMinimap,
+  ContinuousLegend: Plugins.ContinuousLegend,
   Algorithm,
   Arrow,
   Marker,
