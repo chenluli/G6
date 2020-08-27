@@ -45,14 +45,17 @@ const ContinueLegend = () => {
   const container = React.useRef();
   useEffect(() => {
     if (!graph) {
-      const grid = new G6.ContinuousLegend({
-        // 
+      const legend = new G6.ContinuousLegend({
+        nodeField: 'x'
       });
       graph = new Graph({
         container: container.current as string | HTMLElement,
         width: 500,
         height: 500,
-        plugins: [grid],
+        // layout: {
+        //   type: 'force'
+        // },
+        plugins: [legend],
         modes: {
           default: ['drag-canvas', 'zoom-canvas']
         }

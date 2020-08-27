@@ -3,183 +3,57 @@ import Base, { IPluginBaseConfig } from '../base';
 import { deepMix, each, find, get, head, isBoolean, last } from '@antv/util';
 import Legend from '@antv/component';
 import { Continuous, Category } from '@antv/component/lib/legend';
+import { ContinueLegendCfg as ContinueLegendCfgBase } from '@antv/component/lib/types'
 import GCanvas from '@antv/g-canvas/lib/canvas';
 /**
  * 图例项配置
- */
-// export interface ContinuousLegendOps {
-
-// }
-export interface ContinuousLegendCfg {
-  layout?: 'horizontal' | 'vertical'; // 布局方式
-  /**
-   * 图例标题配置，默认不展示。
-   */
-  title?: {
-    spacing?: number;    // 标题同图例项的间距
-    style?: ShapeAttrs;  // 文本样式配置项
-    text?: string;
-  }
-  /** 图例的位置。 */
-  position?:
-  | 'top'
-  | 'top-left'
-  | 'top-right'
-  | 'right'
-  | 'right-top'
-  | 'right-bottom'
-  | 'left'
-  | 'left-top'
-  | 'left-bottom'
-  | 'bottom'
-  | 'bottom-left'
-  | 'bottom-right';
-  /**
-   * 选择范围的最小值。
-   */
-  min?: number;
-  /**
-   * 选择范围的最大值。
-   */
-  max?: number;
-  /**
-   * 选择的值。
-   */
-  value?: number[];
-  /**
-   * 选择范围的色块样式配置项。
-   */
-  track?: {
-    style?: ShapeAttrs; // 选定范围的样式
-  };
-  /**
-   * 图例滑轨（背景）的样式配置项。
-   */
-  rail?: {
-    type?: string; // rail 的类型，color, size
-    size?: number; // 滑轨的宽度
-    defaultLength?: number; // 滑轨的默认长度，，当限制了 maxWidth,maxHeight 时，不会使用这个属性会自动计算长度
-    style?: ShapeAttrs; // 滑轨的样式
-  };
-  /**
-   * 文本的配置项。
-   */
-  label?: {
-    // 文本同滑轨的对齐方式，有五种类型
-    // rail ： 同滑轨对齐，在滑轨的两端
-    // top, bottom: 图例水平布局时有效
-    // left, right: 图例垂直布局时有效
-    align?: string;
-    spacing?: number; // 文本同滑轨的距离
-    style?: ShapeAttrs; // 文本样式
-  };
-  /**
-   * 滑块的配置项。
-   */
-  handler?: {
-    size?: number; // 滑块的大小
-    style?: ShapeAttrs; // 滑块的样式设置
-  };
-  /**
-   * 滑块是否可以滑动。
-   */
-  slidable?: boolean;
-  /** 图例 x 方向的偏移。 */
-  offsetX?: number;
-  /** 图例 y 方向的偏移。 */
-  offsetY?: number;
+**/
+interface ContinueLegendCfg extends ContinueLegendCfgBase {
+  colors: any[],
+  nodeField?: 'value',
+  onFiltered?: any
 }
 
 export default class ContinuousLegend extends Base {
-  public getDefaultCfgs(): ContinuousLegendCfg {
+  public getDefaultCfgs(): ContinueLegendCfg {
     return {
+      id: 'a',
+      x: 10,
+      y: 10,
+      min: Infinity,
+      max: -Infinity,
+      rail: {
+        type: 'size',
+        size: 10,
+      },
+      defaultLength: 100,
+      track: {},
+      label: {},
+      handler: {},
+      container: null,
+      value: [],
+      step: 10,
+      updateAutoRender: true,
+      slidable: true,
+      colors: ['#ffffff', '#1890ff'],
+      selectedState: 'selected',
+      onFiltered: () => { },
     }
   }
 
-
-  // 使用
-  private getContinuousLegendCfgs(attr, scale) {
-
-    // const containMin = ;
-    // const containMax = ;
-    // const items = ticks.map((tick: Tick) => {
-    //   const { value, tickValue } = tick;
-    //   const attrValue = attr.mapping(scale.invert(value)).join('');
-
-    //   return {
-    //     value: tickValue,
-    //     attrValue,
-    //     color: attrValue,
-    //     scaleValue: value,
-    //   };
-    // });
-
-    // if (!containMin) {
-    //   items.push({
-    //     value: scale.min,
-    //     attrValue: attr.mapping(scale.invert(0)).join(''),
-    //     color: attr.mapping(scale.invert(0)).join(''),
-    //     scaleValue: 0,
-    //   });
-    // }
-    // if (!containMax) {
-    //   items.push({
-    //     value: scale.max,
-    //     attrValue: attr.mapping(scale.invert(1)).join(''),
-    //     color: attr.mapping(scale.invert(1)).join(''),
-    //     scaleValue: 1,
-    //   });
-    // }
-
-    // // 排序
-    // items.sort((a: any, b: any) => a.value - b.value);
-
-    // // 跟 attr 相关的配置
-    // // size color 区别的配置
-    // const attrLegendCfg = {
-    //   min: head(items).value,
-    //   max: last(items).value,
-    //   colors: [],
-    //   rail: {
-    //     type: attr.type,
-    //   },
-    //   track: {},
-    // };
-
-    // if (attr.type === 'size') {
-    //   attrLegendCfg.track = {
-    //     style: {
-    //       // size 的选中前景色，对于 color，则直接使用 color 标识
-    //       fill: attr.type === 'size' ? this.view.getTheme().defaultColor : undefined,
-    //     },
-    //   };
-    // }
-
-    // if (attr.type === 'color') {
-    //   attrLegendCfg.colors = items.map((item) => item.attrValue);
-    // }
-
-    // const container = this.container;
-    // // if position is not set, use top as default
-    // const direction = getDirection(legendOption);
-
-    // const layout = getLegendLayout(direction);
-
-    // let title = get(legendOption, 'title');
-    // if (title) {
-    //   title = deepMix(
-    //     {
-    //       text: getName(scale),
-    //     },
-    //     title
-    //   );
-    // }
-
-    // // 基础配置，从当前数据中读到的配置
-    // attrLegendCfg.container = container;
-    // attrLegendCfg.layout = layout;
-    // attrLegendCfg.title = title;
-    // return deepMix(attrLegendCfg, this._cfgs);
+  // 获取graph中的数据
+  private initLegendData() {
+    const nodeField = this._cfgs.nodeField;
+    // console.log(nodeField, this.get('graph').cfg.data.nodes)
+    let min = this._cfgs.min;
+    let max = this._cfgs.max;
+    for (let node of this.get('graph').cfg.data.nodes) {
+      min = Math.min(min, node[nodeField])
+      max = Math.max(max, node[nodeField])
+    }
+    this.set('min', min)
+    this.set('max', max)
+    this.set('value', [min, max]);
   }
 
   /**
@@ -190,52 +64,67 @@ export default class ContinuousLegend extends Base {
    * @param legendOption
    */
   public render(container) {
-    // const attr = this.get('attr')
-    // const scale = attr.getScale(attr.type);
-    // const cfg = this.getContinuousLegendCfgs(attr, scale);
-
-
-    const legend = new Continuous({
-      id: 'a',
-      container,
-      x: 10,
-      y: 10,
-      min: 0,
-      max: 1000,
-      rail: {
-        size: 10,
-        // type: 'size'
-      },
-      // track: {
-      //   style: {
-      //     fill: 'lightblue'
-      //   }
-      // },
-      updateAutoRender: true,
-      localRefresh: false,
-      slidable: true,
-      colors: ['#ffffff', '#1890ff'],
-      // colors: ['red']
-    });
+    const graph = this.get('graph')
+    this.set('container', container)
+    // init legend data
+    this.initLegendData()
+    const legend = new Continuous(this._cfgs);
     legend.init()
     legend.render();
-  }
+    this.set('legend', legend)
+    legend.on('valuechanged', () => {
+      const selectedNodes = this.getFilteredNodes()
+      const selectedEdges = this.getFilteredEdges()
+      if (this.get('onFiltered')) {
+        this.get('onFiltered')(selectedNodes, selectedEdges);
+      }
+      console.log(selectedNodes)
+      graph.emit('nodeselectchange', {
+        selectedItems: {
+          nodes: selectedNodes,
+          edges: selectedEdges,
+        },
+        select: true,
+      });
+    })
 
+  }
+  public getFilteredNodes() {
+    const graph = this.get('graph');
+    const state = this.get('selectedState')
+    const legend = this.get('legend')
+    const selectedNodes = [];
+    for (let node of graph.getNodes()) {
+      if (node.getModel()[this._cfgs.nodeField] >= legend.getValue()[0] && node.getModel()[this._cfgs.nodeField] <= legend.getValue()[1]) {
+        selectedNodes.push(node);
+        graph.setItemState(node, state, true);
+      }
+    };
+    return selectedNodes
+  }
+  public getFilteredEdges() {
+    const graph = this.get('graph');
+    const selectedEdges = []
+    for (let edge of graph.cfg.data.edges) {
+
+    }
+    return selectedEdges
+  }
   public init() {
     const graph = this.get('graph')
-    // let container = this.get('graph').get('canvas');
-    const container = new GCanvas({
+
+    // init canvas 
+    const legendCanvas = new GCanvas({
       container: graph.get('container'),
-      width: 200,
-      height: 40,
+      width: this._cfgs.defaultLength * 2,
+      height: this._cfgs.rail.size * 3,
     })
-    container.set('localRefresh', false)
+    legendCanvas.set('localRefresh', false)
+
     const renderLegend = () => {
-      // const container = graph.get('canvas').addGroup();
-      this.render(container)
+      this.render(legendCanvas)
       graph.off('afterrender', renderLegend)
     }
     graph.on('afterrender', renderLegend)
-
   }
 }
