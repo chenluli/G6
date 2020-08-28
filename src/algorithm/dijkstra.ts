@@ -29,7 +29,7 @@ const dijkstra = (
     if (D[minNodId] === Infinity) continue; // Unreachable vertices cannot be the intermediate point
 
     let relatedEdges = [];
-    if (!directed) relatedEdges = minNode.getOutEdges();
+    if (directed) relatedEdges = minNode.getOutEdges();
     else relatedEdges = minNode.getEdges();
 
     relatedEdges.forEach((e) => {

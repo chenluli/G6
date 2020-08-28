@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import G6, { Algorithm } from '../../../src';
-const { findAllPath, findShortestPath } = Algorithm;
+const { findAllPath, findShortestPath, closenessCentrality } = Algorithm;
 
 const data = {
   nodes: [
@@ -473,6 +473,24 @@ const FindPath = () => {
         targetNode = null;
       }
     });
+
+    const testData = {
+      nodes: [
+        { id: '1' },
+        { id: '2' },
+        { id: '3' }
+      ],
+      edges: [
+        { source: '1', target: '2' },
+        { source: '2', target: '3' },
+      ]
+    }
+    graph.changeData(testData);
+
+    const centrality1 = closenessCentrality(graph, '1');
+    const centrality2 = closenessCentrality(graph, '2');
+    const centrality3 = closenessCentrality(graph, '3');
+
   });
 
   return <div ref={container}></div>;

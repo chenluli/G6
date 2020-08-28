@@ -9,3 +9,4 @@ export { detectAllCycles, detectAllDirectedCycle, detectAllUndirectedCycle } fro
 export { findShortestPath, findAllPath } from './find-path';
 export { default as minimumSpanningTree } from './mst';
 export { default as getPageRank } from './pagerank'
+export { degreeCentrality, closenessCentrality } from './centrality'
